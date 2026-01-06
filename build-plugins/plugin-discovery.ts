@@ -16,8 +16,9 @@ export function createPluginDiscoveryPlugin(): Plugin {
       build.onStart(async () => {
         try {
           await generateWorkflowLoaders();
+          await generateResourceLoaders();
         } catch (error) {
-          console.error('Failed to generate workflow loaders:', error);
+          console.error('Failed to generate loaders:', error);
           throw error;
         }
       });
@@ -25,8 +26,8 @@ export function createPluginDiscoveryPlugin(): Plugin {
   };
 }
 
-async function generateWorkflowLoaders(): Promise<void> {
-  const pluginsDir = path.resolve(process.cwd(), 'src/plugins');
+export async function generateWorkflowLoaders(): Promise<void> {
+  const pluginsDir = path.resolve(process.cwd(), 'src/mcp/tools');
 
   if (!existsSync(pluginsDir)) {
     throw new Error(`Plugins directory not found: ${pluginsDir}`);
@@ -41,7 +42,8 @@ async function generateWorkflowLoaders(): Promise<void> {
   const workflowMetadata: Record<string, WorkflowMetadata> = {};
 
   for (const dirName of workflowDirs) {
-    const indexPath = join(pluginsDir, dirName, 'index.ts');
+    const dirPath = join(pluginsDir, dirName);
+    const indexPath = join(dirPath, 'index.ts');
 
     // Check if workflow has index.ts file
     if (!existsSync(indexPath)) {
@@ -55,11 +57,26 @@ async function generateWorkflowLoaders(): Promise<void> {
       const metadata = extractWorkflowMetadata(indexContent);
 
       if (metadata) {
-        // Generate dynamic import for this workflow
-        workflowLoaders[dirName] = `() => import('../plugins/${dirName}/index.js')`;
+        // Find all tool files in this workflow directory
+        const toolFiles = readdirSync(dirPath, { withFileTypes: true })
+          .filter((dirent) => dirent.isFile())
+          .map((dirent) => dirent.name)
+          .filter(
+            (name) =>
+              (name.endsWith('.ts') || name.endsWith('.js')) &&
+              name !== 'index.ts' &&
+              name !== 'index.js' &&
+              !name.endsWith('.test.ts') &&
+              !name.endsWith('.test.js') &&
+              name !== 'active-processes.ts',
+          );
+
+        workflowLoaders[dirName] = generateWorkflowLoader(dirName, toolFiles);
         workflowMetadata[dirName] = metadata;
 
-        console.log(`✅ Discovered workflow: ${dirName} - ${metadata.name}`);
+        console.log(
+          `✅ Discovered workflow: ${dirName} - ${metadata.name} (${toolFiles.length} tools)`,
+        );
       } else {
         console.warn(`⚠️  Skipping ${dirName}: invalid workflow metadata`);
       }
@@ -69,7 +86,7 @@ async function generateWorkflowLoaders(): Promise<void> {
   }
 
   // Generate the content for generated-plugins.ts
-  const generatedContent = generatePluginsFileContent(workflowLoaders, workflowMetadata);
+  const generatedContent = await generatePluginsFileContent(workflowLoaders, workflowMetadata);
 
   // Write to the generated file
   const outputPath = path.resolve(process.cwd(), 'src/core/generated-plugins.ts');
@@ -78,6 +95,31 @@ async function generateWorkflowLoaders(): Promise<void> {
   await fs.promises.writeFile(outputPath, generatedContent, 'utf8');
 
   console.log(`🔧 Generated workflow loaders for ${Object.keys(workflowLoaders).length} workflows`);
+}
+
+function generateWorkflowLoader(workflowName: string, toolFiles: string[]): string {
+  const toolImports = toolFiles
+    .map((file, index) => {
+      const toolName = file.replace(/\.(ts|js)$/, '');
+      return `const tool_${index} = await import('../mcp/tools/${workflowName}/${toolName}.js').then(m => m.default)`;
+    })
+    .join(';\n    ');
+
+  const toolExports = toolFiles
+    .map((file, index) => {
+      const toolName = file.replace(/\.(ts|js)$/, '');
+      return `'${toolName}': tool_${index}`;
+    })
+    .join(',\n      ');
+
+  return `async () => {
+    const { workflow } = await import('../mcp/tools/${workflowName}/index.js');
+    ${toolImports ? toolImports + ';\n    ' : ''}
+    return {
+      workflow,
+      ${toolExports ? toolExports : ''}
+    };
+  }`;
 }
 
 function extractWorkflowMetadata(content: string): WorkflowMetadata | null {
@@ -109,12 +151,18 @@ function extractWorkflowMetadata(content: string): WorkflowMetadata | null {
   }
 }
 
-function generatePluginsFileContent(
+async function generatePluginsFileContent(
   workflowLoaders: Record<string, string>,
   workflowMetadata: Record<string, WorkflowMetadata>,
-): string {
+): Promise<string> {
   const loaderEntries = Object.entries(workflowLoaders)
-    .map(([key, loader]) => `  '${key}': ${loader}`)
+    .map(([key, loader]) => {
+      const indentedLoader = loader
+        .split('\n')
+        .map((line, index) => (index === 0 ? `  '${key}': ${line}` : `  ${line}`))
+        .join('\n');
+      return indentedLoader;
+    })
     .join(',\n');
 
   const metadataEntries = Object.entries(workflowMetadata)
@@ -127,7 +175,7 @@ function generatePluginsFileContent(
     })
     .join(',\n');
 
-  return `// AUTO-GENERATED - DO NOT EDIT
+  const content = `// AUTO-GENERATED - DO NOT EDIT
 // This file is generated by the plugin discovery esbuild plugin
 
 // Generated based on filesystem scan
@@ -142,4 +190,95 @@ export const WORKFLOW_METADATA = {
 ${metadataEntries}
 };
 `;
+  return formatGenerated(content);
+}
+
+export async function generateResourceLoaders(): Promise<void> {
+  const resourcesDir = path.resolve(process.cwd(), 'src/mcp/resources');
+
+  if (!existsSync(resourcesDir)) {
+    console.log('Resources directory not found, skipping resource generation');
+    return;
+  }
+
+  const resourceFiles = readdirSync(resourcesDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isFile())
+    .map((dirent) => dirent.name)
+    .filter(
+      (name) =>
+        (name.endsWith('.ts') || name.endsWith('.js')) &&
+        !name.endsWith('.test.ts') &&
+        !name.endsWith('.test.js') &&
+        !name.startsWith('__'),
+    );
+
+  const resourceLoaders: Record<string, string> = {};
+
+  for (const fileName of resourceFiles) {
+    const resourceName = fileName.replace(/\.(ts|js)$/, '');
+    resourceLoaders[resourceName] = `async () => {
+    const module = await import('../mcp/resources/${resourceName}.js');
+    return module.default;
+  }`;
+
+    console.log(`✅ Discovered resource: ${resourceName}`);
+  }
+
+  const generatedContent = await generateResourcesFileContent(resourceLoaders);
+  const outputPath = path.resolve(process.cwd(), 'src/core/generated-resources.ts');
+
+  const fs = await import('fs');
+  await fs.promises.writeFile(outputPath, generatedContent, 'utf8');
+
+  console.log(`🔧 Generated resource loaders for ${Object.keys(resourceLoaders).length} resources`);
+}
+
+async function generateResourcesFileContent(
+  resourceLoaders: Record<string, string>,
+): Promise<string> {
+  const loaderEntries = Object.entries(resourceLoaders)
+    .map(([key, loader]) => `  '${key}': ${loader}`)
+    .join(',\n');
+
+  const content = `// AUTO-GENERATED - DO NOT EDIT
+// This file is generated by the plugin discovery esbuild plugin
+
+export const RESOURCE_LOADERS = {
+${loaderEntries}
+};
+
+export type ResourceName = keyof typeof RESOURCE_LOADERS;
+`;
+  return formatGenerated(content);
+}
+
+async function formatGenerated(content: string): Promise<string> {
+  try {
+    const { resolve } = await import('node:path');
+    const { pathToFileURL } = await import('node:url');
+    const prettier = await import('prettier');
+    let config = (await prettier.resolveConfig(process.cwd())) ?? null;
+    if (!config) {
+      try {
+        const configUrl = pathToFileURL(resolve(process.cwd(), '.prettierrc.js')).href;
+        const configModule = await import(configUrl);
+        config = (configModule as { default?: unknown }).default ?? configModule;
+      } catch {
+        config = null;
+      }
+    }
+    const options = {
+      semi: true,
+      trailingComma: 'all' as const,
+      singleQuote: true,
+      printWidth: 100,
+      tabWidth: 2,
+      endOfLine: 'auto' as const,
+      ...(config as Record<string, unknown> | null),
+      parser: 'typescript',
+    };
+    return prettier.format(content, options);
+  } catch {
+    return content;
+  }
 }

@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { z } from 'zod';
+import * as z from 'zod';
 import { createMockExecutor, createNoopExecutor } from '../../../../test-utils/mock-executors.ts';
 import { sessionStore } from '../../../../utils/session-store.ts';
 import keySequencePlugin, { key_sequenceLogic } from '../key_sequence.ts';
@@ -39,7 +39,7 @@ describe('Key Sequence Plugin', () => {
       expect(schema.safeParse({ keyCodes: [40], delay: -0.1 }).success).toBe(false);
 
       const withSimId = schema.safeParse({
-        simulatorId: '12345678-1234-1234-1234-123456789012',
+        simulatorId: '12345678-1234-4234-8234-123456789012',
         keyCodes: [40],
       });
       expect(withSimId.success).toBe(true);
@@ -61,7 +61,7 @@ describe('Key Sequence Plugin', () => {
     });
 
     it('should surface validation errors once simulator defaults exist', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await keySequencePlugin.handler({ keyCodes: [] });
 
@@ -92,7 +92,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -101,7 +101,7 @@ describe('Key Sequence Plugin', () => {
 
       await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40, 42, 44],
         },
         trackingExecutor,
@@ -114,7 +114,7 @@ describe('Key Sequence Plugin', () => {
         '--keycodes',
         '40,42,44',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -137,7 +137,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -146,7 +146,7 @@ describe('Key Sequence Plugin', () => {
 
       await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [58, 59, 60],
           delay: 0.5,
         },
@@ -162,7 +162,7 @@ describe('Key Sequence Plugin', () => {
         '--delay',
         '0.5',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -185,7 +185,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -194,7 +194,7 @@ describe('Key Sequence Plugin', () => {
 
       await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [255],
         },
         trackingExecutor,
@@ -207,7 +207,7 @@ describe('Key Sequence Plugin', () => {
         '--keycodes',
         '255',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -230,7 +230,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -239,7 +239,7 @@ describe('Key Sequence Plugin', () => {
 
       await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [0, 1, 2, 3, 4],
           delay: 1.0,
         },
@@ -255,7 +255,7 @@ describe('Key Sequence Plugin', () => {
         '--delay',
         '1',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
   });
@@ -283,7 +283,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -292,7 +292,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40, 42, 44],
           delay: 0.1,
         },
@@ -320,7 +320,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -329,7 +329,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         mockExecutor,
@@ -350,7 +350,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -359,7 +359,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         createNoopExecutor(),
@@ -370,7 +370,7 @@ describe('Key Sequence Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -391,7 +391,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -400,7 +400,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         mockExecutor,
@@ -430,7 +430,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -439,7 +439,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         mockExecutor,
@@ -464,7 +464,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -473,7 +473,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         mockExecutor,
@@ -498,7 +498,7 @@ describe('Key Sequence Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -507,7 +507,7 @@ describe('Key Sequence Plugin', () => {
 
       const result = await key_sequenceLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCodes: [40],
         },
         mockExecutor,

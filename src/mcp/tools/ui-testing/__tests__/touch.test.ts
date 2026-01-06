@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { z } from 'zod';
+import * as z from 'zod';
 import { createMockExecutor } from '../../../../test-utils/mock-executors.ts';
 import { sessionStore } from '../../../../utils/session-store.ts';
 import touchPlugin, { touchLogic } from '../touch.ts';
@@ -74,7 +74,7 @@ describe('Touch Plugin', () => {
       ).toBe(false);
 
       const withSimId = schema.safeParse({
-        simulatorId: '12345678-1234-1234-1234-123456789012',
+        simulatorId: '12345678-1234-4234-8234-123456789012',
         x: 100,
         y: 200,
         down: true,
@@ -100,7 +100,7 @@ describe('Touch Plugin', () => {
     });
 
     it('should surface parameter validation errors when defaults exist', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await touchPlugin.handler({
         y: 200,
@@ -110,7 +110,7 @@ describe('Touch Plugin', () => {
       expect(result.isError).toBe(true);
       const message = result.content[0].text;
       expect(message).toContain('Parameter validation failed');
-      expect(message).toContain('x: Required');
+      expect(message).toContain('x: Invalid input: expected number, received undefined');
     });
   });
 
@@ -134,7 +134,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -143,7 +143,7 @@ describe('Touch Plugin', () => {
 
       await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -161,7 +161,7 @@ describe('Touch Plugin', () => {
         '200',
         '--down',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -184,7 +184,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -193,7 +193,7 @@ describe('Touch Plugin', () => {
 
       await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 150,
           y: 250,
           up: true,
@@ -211,7 +211,7 @@ describe('Touch Plugin', () => {
         '250',
         '--up',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -234,7 +234,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -243,7 +243,7 @@ describe('Touch Plugin', () => {
 
       await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 300,
           y: 400,
           down: true,
@@ -263,7 +263,7 @@ describe('Touch Plugin', () => {
         '--down',
         '--up',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -286,7 +286,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -295,7 +295,7 @@ describe('Touch Plugin', () => {
 
       await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 50,
           y: 75,
           down: true,
@@ -318,7 +318,7 @@ describe('Touch Plugin', () => {
         '--delay',
         '1.5',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -377,7 +377,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -386,7 +386,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -399,7 +399,7 @@ describe('Touch Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -415,7 +415,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -424,7 +424,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -453,7 +453,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -462,7 +462,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           up: true,
@@ -487,7 +487,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -514,7 +514,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -523,7 +523,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -557,7 +557,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -566,7 +566,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           up: true,
@@ -600,7 +600,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -609,7 +609,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -640,7 +640,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -649,7 +649,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -662,7 +662,7 @@ describe('Touch Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -683,7 +683,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -692,7 +692,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -724,7 +724,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -733,7 +733,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -767,7 +767,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -776,7 +776,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,
@@ -810,7 +810,7 @@ describe('Touch Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -819,7 +819,7 @@ describe('Touch Plugin', () => {
 
       const result = await touchLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           down: true,

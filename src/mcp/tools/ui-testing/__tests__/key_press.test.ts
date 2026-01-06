@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
   createMockExecutor,
   createMockFileSystemExecutor,
@@ -42,7 +42,7 @@ describe('Key Press Plugin', () => {
       expect(schema.safeParse({ keyCode: 256 }).success).toBe(false);
 
       const withSimId = schema.safeParse({
-        simulatorId: '12345678-1234-1234-1234-123456789012',
+        simulatorId: '12345678-1234-4234-8234-123456789012',
         keyCode: 40,
       });
       expect(withSimId.success).toBe(true);
@@ -64,14 +64,14 @@ describe('Key Press Plugin', () => {
     });
 
     it('should surface validation errors once simulator default exists', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await keyPressPlugin.handler({});
 
       expect(result.isError).toBe(true);
       const message = result.content[0].text;
       expect(message).toContain('Parameter validation failed');
-      expect(message).toContain('keyCode: Required');
+      expect(message).toContain('keyCode: Invalid input: expected number, received undefined');
     });
   });
 
@@ -95,7 +95,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -104,7 +104,7 @@ describe('Key Press Plugin', () => {
 
       await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         trackingExecutor,
@@ -116,7 +116,7 @@ describe('Key Press Plugin', () => {
         'key',
         '40',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -139,7 +139,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -148,7 +148,7 @@ describe('Key Press Plugin', () => {
 
       await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 42,
           duration: 1.5,
         },
@@ -163,7 +163,7 @@ describe('Key Press Plugin', () => {
         '--duration',
         '1.5',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -186,7 +186,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -195,7 +195,7 @@ describe('Key Press Plugin', () => {
 
       await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 255,
         },
         trackingExecutor,
@@ -207,7 +207,7 @@ describe('Key Press Plugin', () => {
         'key',
         '255',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
 
@@ -230,7 +230,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -239,7 +239,7 @@ describe('Key Press Plugin', () => {
 
       await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 44,
         },
         trackingExecutor,
@@ -251,7 +251,7 @@ describe('Key Press Plugin', () => {
         'key',
         '44',
         '--udid',
-        '12345678-1234-1234-1234-123456789012',
+        '12345678-1234-4234-8234-123456789012',
       ]);
     });
   });
@@ -274,7 +274,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -283,7 +283,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         mockExecutor,
@@ -310,7 +310,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -319,7 +319,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 42,
           duration: 1.5,
         },
@@ -341,7 +341,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -350,7 +350,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         createNoopExecutor(),
@@ -361,10 +361,7 @@ describe('Key Press Plugin', () => {
         content: [
           {
             type: 'text',
-            text:
-              'Bundled axe tool not found. UI automation features are not available.\n\n' +
-              'This is likely an installation issue with the npm package.\n' +
-              'Please reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -385,7 +382,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -394,7 +391,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         mockExecutor,
@@ -424,7 +421,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -433,7 +430,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         mockExecutor,
@@ -458,7 +455,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -467,7 +464,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         mockExecutor,
@@ -492,7 +489,7 @@ describe('Key Press Plugin', () => {
           content: [
             {
               type: 'text',
-              text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+              text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
             },
           ],
           isError: true,
@@ -501,7 +498,7 @@ describe('Key Press Plugin', () => {
 
       const result = await key_pressLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           keyCode: 40,
         },
         mockExecutor,

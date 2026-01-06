@@ -10,9 +10,6 @@ dist/
 *.tsbuildinfo
 
 # Auto-generated files
-src/version.ts
-src/core/generated-plugins.ts
-src/core/generated-resources.ts
 
 # IDE and editor files
 .idea/
@@ -103,6 +100,7 @@ buildServer.json
 
 # Bundled AXe artifacts (generated during build)
 bundled/
+.smithery/
 
 /.mcpregistry_github_token
 /.mcpregistry_registry_token

@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { z } from 'zod';
+import * as z from 'zod';
 import { createMockExecutor } from '../../../../test-utils/mock-executors.ts';
 import { sessionStore } from '../../../../utils/session-store.ts';
 
@@ -18,7 +18,7 @@ function createMockAxeHelpers(): AxeHelpers {
       content: [
         {
           type: 'text',
-          text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+          text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
         },
       ],
       isError: true,
@@ -35,7 +35,7 @@ function createMockAxeHelpersWithNullPath(): AxeHelpers {
       content: [
         {
           type: 'text',
-          text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+          text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
         },
       ],
       isError: true,
@@ -118,7 +118,7 @@ describe('Tap Plugin', () => {
       ).toBe(false);
 
       const withSimId = schema.safeParse({
-        simulatorId: '12345678-1234-1234-1234-123456789012',
+        simulatorId: '12345678-1234-4234-8234-123456789012',
         x: 100,
         y: 200,
       });
@@ -159,7 +159,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -177,7 +177,7 @@ describe('Tap Plugin', () => {
           '-y',
           '200',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -205,7 +205,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           id: 'loginButton',
         },
         wrappedExecutor,
@@ -220,7 +220,7 @@ describe('Tap Plugin', () => {
           '--id',
           'loginButton',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -248,7 +248,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           label: 'Log in',
         },
         wrappedExecutor,
@@ -263,7 +263,7 @@ describe('Tap Plugin', () => {
           '--label',
           'Log in',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -291,7 +291,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 120,
           y: 240,
           id: 'loginButton',
@@ -310,7 +310,7 @@ describe('Tap Plugin', () => {
           '-y',
           '240',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -338,7 +338,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 150,
           y: 300,
           preDelay: 0.5,
@@ -359,7 +359,7 @@ describe('Tap Plugin', () => {
           '--pre-delay',
           '0.5',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -387,7 +387,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 250,
           y: 400,
           postDelay: 1.0,
@@ -408,7 +408,7 @@ describe('Tap Plugin', () => {
           '--post-delay',
           '1',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -436,7 +436,7 @@ describe('Tap Plugin', () => {
 
       await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 350,
           y: 500,
           preDelay: 0.3,
@@ -460,7 +460,7 @@ describe('Tap Plugin', () => {
           '--post-delay',
           '0.7',
           '--udid',
-          '12345678-1234-1234-1234-123456789012',
+          '12345678-1234-4234-8234-123456789012',
         ],
         logPrefix: '[AXe]: tap',
         useShell: false,
@@ -480,7 +480,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -538,7 +538,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 250,
           y: 400,
           preDelay: 0.5,
@@ -569,7 +569,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 0,
           y: 0,
         },
@@ -598,7 +598,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 1920,
           y: 1080,
         },
@@ -627,7 +627,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           id: 'loginButton',
         },
         mockExecutor,
@@ -655,7 +655,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           label: 'Log in',
         },
         mockExecutor,
@@ -689,7 +689,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for missing x coordinate', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         y: 200,
@@ -702,7 +702,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for missing y coordinate', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         x: 100,
@@ -715,7 +715,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error when both id and label are provided without coordinates', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         id: 'loginButton',
@@ -729,7 +729,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for non-integer x coordinate', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         x: 3.14,
@@ -743,7 +743,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for non-integer y coordinate', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         x: 100,
@@ -757,7 +757,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for negative preDelay', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         x: 100,
@@ -772,7 +772,7 @@ describe('Tap Plugin', () => {
     });
 
     it('should return validation error for negative postDelay', async () => {
-      sessionStore.setDefaults({ simulatorId: '12345678-1234-1234-1234-123456789012' });
+      sessionStore.setDefaults({ simulatorId: '12345678-1234-4234-8234-123456789012' });
 
       const result = await tapPlugin.handler({
         x: 100,
@@ -799,7 +799,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
           preDelay: 0.5,
@@ -813,7 +813,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -831,7 +831,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -843,7 +843,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -861,7 +861,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -873,7 +873,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -889,7 +889,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -901,7 +901,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -917,7 +917,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -929,7 +929,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
@@ -945,7 +945,7 @@ describe('Tap Plugin', () => {
 
       const result = await tapLogic(
         {
-          simulatorId: '12345678-1234-1234-1234-123456789012',
+          simulatorId: '12345678-1234-4234-8234-123456789012',
           x: 100,
           y: 200,
         },
@@ -957,7 +957,7 @@ describe('Tap Plugin', () => {
         content: [
           {
             type: 'text',
-            text: 'Bundled axe tool not found. UI automation features are not available.\n\nThis is likely an installation issue with the npm package.\nPlease reinstall xcodebuildmcp or report this issue.',
+            text: 'AXe tool not found. UI automation features are not available.\n\nInstall AXe (brew tap cameroncooke/axe && brew install axe) or set XCODEBUILDMCP_AXE_PATH.\nIf you installed via Smithery, ensure bundled artifacts are included or PATH is configured.',
           },
         ],
         isError: true,
